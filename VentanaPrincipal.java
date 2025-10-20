@@ -1,75 +1,63 @@
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class VentanaPrincipal extends JFrame {
+public class VentanaPrincipal {
+    private JTextArea txt_colacomp;
+    private JTextArea txt_colauq;
+    private JButton r1MostrarObjetosColaButton;
+    private JButton r2ValorDeAtaqueButton;
+    private JButton r3FunciónEspecificaButton;
+    private JComboBox cbox_atributos;
+    public JPanel panelPrincipal;
+
     private ColaRobot cola;
-    private JTextArea txtColaOriginal;
-    private JTextArea txtColaCopia;
-    private JComboBox<String> cmbFuncion;
 
     public VentanaPrincipal() {
-        setTitle("Gestión de Transformers");
-        setSize(800, 600);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(null);
-
         cola = new ColaRobot();
 
-        JLabel lblTitulo = new JLabel("Evaluación Progreso 1 - Transformers");
-        lblTitulo.setBounds(250, 10, 400, 30);
-        add(lblTitulo);
+        // Llenar ComboBox con funciones posibles
+        cbox_atributos.addItem("Liderazgo");
+        cbox_atributos.addItem("Velocidad");
+        cbox_atributos.addItem("Evolución");
+        cbox_atributos.addItem("Volar");
+        cbox_atributos.addItem("Defensa");
 
-        JButton btnGenerar = new JButton("R1: Generar Robots");
-        btnGenerar.setBounds(50, 60, 200, 30);
-        add(btnGenerar);
-
-        JButton btnMostrarAtaque = new JButton("R2: Mostrar Valor de Ataque");
-        btnMostrarAtaque.setBounds(270, 60, 230, 30);
-        add(btnMostrarAtaque);
-
-        cmbFuncion = new JComboBox<>(new String[]{"Liderazgo", "Velocidad", "Evolución", "Volar", "Defensa"});
-        cmbFuncion.setBounds(520, 60, 120, 30);
-        add(cmbFuncion);
-
-        JButton btnCopiar = new JButton("R3: Copiar por Función");
-        btnCopiar.setBounds(650, 60, 120, 30);
-        add(btnCopiar);
-
-        txtColaOriginal = new JTextArea();
-        txtColaOriginal.setEditable(false);
-        JScrollPane scroll1 = new JScrollPane(txtColaOriginal);
-        scroll1.setBounds(50, 120, 330, 400);
-        add(scroll1);
-
-        txtColaCopia = new JTextArea();
-        txtColaCopia.setEditable(false);
-        JScrollPane scroll2 = new JScrollPane(txtColaCopia);
-        scroll2.setBounds(420, 120, 330, 400);
-        add(scroll2);
-
-        // Eventos
-        btnGenerar.addActionListener(e -> {
-            cola.inicializarCola();
-            txtColaOriginal.setText(cola.mostrarCola());
-            txtColaCopia.setText("");
+        // R1: Generar los objetos de la cola
+        r1MostrarObjetosColaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cola.inicializarCola();
+                txt_colauq.setText(cola.mostrarCola());
+                txt_colacomp.setText("");
+            }
         });
 
-        btnMostrarAtaque.addActionListener(e -> {
-            txtColaOriginal.setText(cola.mostrarCola());
+        // R2: Mostrar valor de ataque
+        r2ValorDeAtaqueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                txt_colauq.setText(cola.mostrarCola());
+            }
         });
 
-        btnCopiar.addActionListener(e -> {
-            String funcionSel = (String) cmbFuncion.getSelectedItem();
-            ColaRobot copia = cola.copiarPorFuncion(funcionSel);
-            txtColaCopia.setText(copia.mostrarCola());
+        // R3: Copiar cola por función
+        r3FunciónEspecificaButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String funcionSeleccionada = (String) cbox_atributos.getSelectedItem();
+                ColaRobot copia = cola.copiarPorFuncion(funcionSeleccionada);
+                txt_colacomp.setText(copia.mostrarCola());
+            }
         });
     }
 
+    // Método main para ejecutar la interfaz
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new VentanaPrincipal().setVisible(true);
-        });
+        JFrame frame = new JFrame("Evaluación - Cola de Robots");
+        frame.setContentPane(new VentanaPrincipal().panelPrincipal);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.setVisible(true);
     }
 }
