@@ -14,9 +14,9 @@ public class VentanaPrincipal {
 
     private JButton r2ValorDeAtaqueButton;
 
-    private JButton r3FunciónEspecificaButton;
+    private JButton r3FuncionEspecificaButton;
 
-    private JComboBox cbox_atributos;
+    private JComboBox<String> cbox_atributos;
 
     public JPanel panelPrincipal;
 
@@ -72,7 +72,7 @@ public class VentanaPrincipal {
 
         // R3: Copiar cola por función
 
-        r3FunciónEspecificaButton.addActionListener(new ActionListener() {
+        r3FuncionEspecificaButton.addActionListener(new ActionListener() {
 
             @Override
 
@@ -110,9 +110,33 @@ public class VentanaPrincipal {
 
     private static void crearYMostrarGUI() {
 
+        try {
+
+            // Usar UIManager para mejor apariencia
+
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeel());
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        }
+
         JFrame frame = new JFrame("Evaluación - Cola de Robots");
 
+        // Crear instancia de VentanaPrincipal
+
         VentanaPrincipal ventana = new VentanaPrincipal();
+
+        // Verificar que panelPrincipal no sea null
+
+        if (ventana.panelPrincipal == null) {
+
+            JOptionPane.showMessageDialog(null, "Error: panelPrincipal es null. Verifica el diseño de la interfaz.");
+
+            return;
+
+        }
 
         frame.setContentPane(ventana.panelPrincipal);
 
